@@ -1,0 +1,145 @@
+[
+    {
+        "name": "utils:create_file_entity",
+        "description": "创建文件实体，用于存储源代码文件内容和元数据。文件实体是虚拟的，只在共享世界中存在",
+        "parameters": {
+            "fileName": "string | 文件名（包含扩展名，如 main.js、styles.css）",
+            "expectedEID": "string | 期望的实体ID，这意味着你可以在创建文件的同时传递它的EID到其他操作中",
+            "content": "string | 文件内容",
+            "fileType": "string | 文件类型（js、html、css、json、md 等）",
+            "description": "string | 文件描述（可选）",
+            "makeGlobal": {
+                "type": "boolean | 是否注册为全局实体，默认 true",
+                "optional": true
+            }
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:read_file_lines",
+        "description": "按行读取文件内容，返回标准化格式（行号：内容）。用于代码审查和协作",
+        "parameters": {
+            "fileEntityId": "string | 文件实体ID",
+            "startLine": {
+                "type": "number | 起始行号（从1开始），默认1",
+                "optional": true
+            },
+            "endLine": {
+                "type": "number | 结束行号，默认读取到文件末尾",
+                "optional": true
+            }
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:edit_file_lines",
+        "description": "按行编辑文件内容。可以插入、修改或删除指定行",
+        "parameters": {
+            "fileEntityId": "string | 文件实体ID",
+            "lineEdits": "array | 行编辑操作数组，每个操作包含：lineNumber（行号）、action（insert/update/delete）、content（新内容，delete时不需要）"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:create_directory_entity",
+        "description": "创建虚拟目录结构实体，用于组织项目文件。目录实体包含文件引用和子目录",
+        "parameters": {
+            "directoryName": "string | 目录名称",
+            "structure": "object | 目录结构对象，键为文件名或目录名，值为文件实体ID或嵌套结构",
+            "description": "string | 目录描述",
+            "makeGlobal": {
+                "type": "boolean | 是否注册为全局实体，默认 true",
+                "optional": true
+            }
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:list_directory",
+        "description": "列出目录内容，显示所有文件和子目录的详细信息",
+        "parameters": {
+            "directoryEntityId": "string | 目录实体ID"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:build_niva_app",
+        "description": "使用Niva开发者工具构建桌面应用。传入包含niva.json的虚拟目录，自动生成可执行文件实体",
+        "parameters": {
+            "directoryEntityId": "string | 包含完整项目的目录实体ID",
+            "buildName": "string | 构建名称（用于标识此次构建）",
+            "description": "string | 构建描述"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:get_file_entity",
+        "description": "根据文件实体ID获取文件的详细信息和内容",
+        "parameters": {
+            "fileEntityId": "string | 文件实体ID"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:search_in_files",
+        "description": "在多个文件中搜索指定内容，返回匹配的文件和行号",
+        "parameters": {
+            "fileEntityIds": "array | 要搜索的文件实体ID数组",
+            "searchText": "string | 搜索文本",
+            "caseSensitive": {
+                "type": "boolean | 是否区分大小写，默认 false",
+                "optional": true
+            }
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:create_global_entity",
+        "description": "创建全局共享实体，该实体可在所有开发人员间共享和访问",
+        "parameters": {
+            "entityData": "object | 实体数据对象",
+            "description": "string | 实体描述"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:get_global_entity",
+        "description": "根据实体ID获取全局共享实体的详细信息",
+        "parameters": {
+            "entityId": "string | 全局实体ID"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:send_message",
+        "description": "向指定开发人员发送私有消息，用于开发团队间的直接通信",
+        "parameters": {
+            "toAgentId": "string | 目标开发人员的ID",
+            "content": "string | 消息内容"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:broadcast_message",
+        "description": "向所有开发人员广播消息，用于发布公告或共享信息",
+        "parameters": {
+            "content": "string | 广播消息内容"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:wait_for_some_time",
+        "description": "等待指定时间，当你在等待其他开发人员时使用此操作",
+        "parameters": {
+            "time": "number | 等待的秒数，建议为30-60秒"
+        },
+        "isMeta": false
+    },
+    {
+        "name": "utils:leave_world",
+        "description": "当你完成所有开发任务后，使用此操作离开开发环境，你一旦离开将无法返回",
+        "parameters": {
+            "message": "string | 为开发团队留下的消息"
+        }
+    }
+]
