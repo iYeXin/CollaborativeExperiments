@@ -8,7 +8,8 @@ const blankPrompt = require('./prompt/blank')
 const operations = require('./tools/utils/tools.json');
 const fs = require('fs');
 const process = require('process');
-const { frontendDevelopDocs, buildDoc } = require('./tools/utils/docs')
+const { frontendDevelopDocs, buildDoc } = require('./tools/utils/docs');
+const { openaiConfig } = require('./config');
 
 // 创建共享世界实例
 const sharedWorld = new SharedWorld();
@@ -86,16 +87,7 @@ async function createAgentSystems(agentConfigs) {
 
     for (const config of agentConfigs) {
         const agent = new AIAgentSystem({
-            openaiConfig: {
-                baseURL: 'https://api.deepseek.com',
-                apiKey: process.env.DEEPSEEK_API,
-                model: 'deepseek-chat',
-                temperature: 0.5
-                // baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',  // 阿里云
-                // apiKey: process.env.ALI_API || 'API_KEY',  // 从环境变量获取API密钥
-                // model: 'qwen-plus',  // 小屋实验使用模型  基于 2025-11-03 日
-                // temperature: 0.5
-            },
+            openaiConfig,
             msgType: 'text',
             msgContent: config.initialMessage,
             senderId: 'user',
